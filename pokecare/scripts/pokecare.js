@@ -42,7 +42,7 @@ closeNameInput.addEventListener('click', () => {
 closeGame.addEventListener('click', () => {
     game.style.display = 'none';
     background.style.display = 'none';
-    Pokemon.deleleInstance();
+    Pokemon.deleteInstance();
     pokemon = null;
     name = null;
     choice = null;

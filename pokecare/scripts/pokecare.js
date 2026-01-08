@@ -23,6 +23,12 @@ const playGameButton = document.getElementById('game-play-btn');
 const feedGameButton = document.getElementById('game-feed-btn');
 const sleepGameButton = document.getElementById('game-sleep-btn');
 
+// On-screen stats
+const onScreenMood = document.getElementById('mood-p');
+const onScreenHunger = document.getElementById('hunger-p');
+const onScreenEnergy = document.getElementById('energy-p');
+
+
 // close buttons declarations
 const closeBtns = document.querySelectorAll('.close-btn');
 const closeChoices = closeBtns[0];
@@ -85,7 +91,7 @@ async function setGameSprite(choice) {
   gamePokemon.src = await api.getSprite(choice);
 }
 
-// ===== main memu ===== (To revamp)
+// ===== main memu =====
 // Play
 playBtn.addEventListener('click', () => {
     background.style.display = 'block';
@@ -99,18 +105,46 @@ function closeChoices_OpenNameInput() {
   inputDiv.style.display = 'block';
 }
 
-// buttons handler function
+function updateOnScreenStats() {
+  onScreenMood.textContent = `Mood: ${pokemon.getMood}`;
+  onScreenHunger.textContent = `Hunger: ${pokemon.getHunger}`;
+  onScreenEnergy.textContent = `Energy: ${pokemon.getEnergy}`;
+}
+
+// isFainted function
+function isFainted() {
+  if(pokemon.isFainted) {
+    console.log(`${pokemon.getName} fainted. You lose.`);
+
+    // closes the game scrren and restarts the values
+    game.style.display = 'none';
+    background.style.display = 'none';
+    Pokemon.deleteInstance();
+    pokemon = null;
+    name = null;
+    choice = null;
+    gamePokemon.src = "";
+  }
+}
+
+// buttons handler function | play(), feed(), sleep()
 function gameButtonsFunction() {
   playGameButton.addEventListener('click', () => {
     pokemon.play();
+    updateOnScreenStats();
+    isFainted();
   });
 
   feedGameButton.addEventListener('click', () => {
     pokemon.feed();
+    updateOnScreenStats();
+    isFainted();
   });
 
   sleepGameButton.addEventListener('click', () => {
     pokemon.sleep();
+    updateOnScreenStats();
+    isFainted();
   });
 }
 
@@ -146,6 +180,7 @@ async function nameInputFunction() {
       } else if (choice === pokemonList[2].species) {
         pokemon = new Pokemon(name, pokemonList[2].species)
       }
+      updateOnScreenStats();
     }
 
     nameTextbox.value = "";

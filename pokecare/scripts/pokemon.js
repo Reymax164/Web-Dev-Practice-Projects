@@ -50,7 +50,19 @@ export default class Pokemon {
 
   // setters
   set setName(name) {
-    this.name = this.name;
+    this.name = name;
+  }
+
+  setMood(amount) {
+    this.mood += amount;
+  }
+
+  setHunger(amount) {
+    this.hunger += amount;
+  }
+
+  setEnergy(amount) {
+    this.energy += amount;
   }
 
   // stat increasers
@@ -105,7 +117,13 @@ export default class Pokemon {
     }
     if(this.mood < 0) this.mood = 0;
 
-    if(this.energy < -150) {
+    if(this.mood === 0) {
+      console.log(`${this.name} is bored.`);
+      this.decreaseEnergy(randomizer(10, 30));
+    }
+    if(this.energy < 0) this.energy = 0;
+
+    if(this.energy < -130) {
       console.log(`${this.name} crashed out of tiredness.`);
       this.sleep();
     }
@@ -113,7 +131,9 @@ export default class Pokemon {
     moodChange = this.mood - previousMood;
     hungerChange = this.hunger - previousHunger;
     energyChange = this.energy - previousEnergy;
+  }
 
+  logStatChanges() {
     console.log(`Mood ${moodChange >= 0? "+" : ""}${moodChange}`);
     console.log(`Hunger ${hungerChange >= 0? "+" : ""}${hungerChange}`);
     console.log(`Energy ${energyChange >= 0? "+" : ""}${energyChange}`);
@@ -126,10 +146,20 @@ export default class Pokemon {
   }
 
   // activity functions
+  // ===== feed =====
   feed() {
     if(this.hunger >= 100) {
       console.log(`${this.name} is full`);
       return; 
+    }
+
+    if(this.mood <= 30) {
+      let eatOutcome = randomizer(1, 5);
+
+      if(eatOutcome > 1) {
+        console.log(`${this.name} is not in mood to eat.`);
+        return;
+      }
     }
     
     previousMood = this.mood;
@@ -160,9 +190,10 @@ export default class Pokemon {
     this.increaseEnergy(randomizer(10, 30));
 
     this.limitCheck();
-    
+    this.logStatChanges();
   }
 
+  // ===== play =====
   play() {
     if(this.energy <= 0) {
       console.log(`${this.name} has no energy to play.`);
@@ -195,9 +226,11 @@ export default class Pokemon {
     this.decreaseHunger(randomizer(30, 50));
 
     this.limitCheck();
+    this.logStatChanges();
 
   }
 
+  // ===== sleep =====
   sleep() {
     if(this.energy === 100) {
       console.log(`${this.name} is full of energy.`);
@@ -237,6 +270,7 @@ export default class Pokemon {
     }
 
     this.limitCheck();
+    this.logStatChanges();
   }
 
   get isFainted() {

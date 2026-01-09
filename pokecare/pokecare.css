@@ -1,6 +1,7 @@
 body {
   display: flex;
   flex-direction: column;
+  user-select: none;
   height: 100vh;
 }
 
@@ -180,12 +181,45 @@ body {
 
 #game-screen {
   position: relative;
-  display: grid;
+  display: flex;
   justify-content: center;
   height: 90%;
   background-color: var(--white);
   border-top-right-radius: 16px;
   border-top-left-radius: 16px;
+}
+
+#game-pokemon {
+  align-self: center;
+  justify-self: center;
+  height: 20vh;
+  position: absolute;
+  bottom: 20%;
+}
+
+#pokemon-name {
+  font-size: 0.75em;
+  color: #fff;
+  background-color: #000000b3;
+  width: fit-content;
+  text-align: center;
+  align-self: center;
+  padding: 2px 4px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 20%;
+}
+
+#points {
+  font-size: 0.75em;
+  color: #fff;
+  background-color: #000000b3;
+  padding: 2px 4px;
+  border-top-left-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: fit-content;
 }
 
 #game-btns-container {
@@ -248,6 +282,14 @@ body {
   background-color: hsl(240, 100%, 10%);
 }
 
+.buttons-cooldown {
+  pointer-events: none;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* stats */
 #stats-container {
   background-color: var(--moss);
@@ -265,11 +307,6 @@ body {
 .pokemon-stats-p {
   width: fit-content;
   color: var(--white);
-}
-
-#game-pokemon {
-  align-self: center;
-  justify-self: center;
 }
 
 @media screen and (max-width: 830px) {

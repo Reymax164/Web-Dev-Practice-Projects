@@ -222,6 +222,22 @@ body {
   width: fit-content;
 }
 
+#on-screen-log {
+  color: var(--white);
+  background-color: var(--moss);
+  position: absolute;
+  top: 2px;
+  left: -33%;
+  z-index: 5;
+  width: 32%;
+  height: fit-content;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+#on-screen-log hr {margin: 4px 0px;}
+
+/* game buttons */
 #game-btns-container {
   display: flex;
   flex-wrap: wrap;
@@ -234,7 +250,6 @@ body {
   border-bottom-left-radius: 16px;
 }
 
-/* game buttons */
 .game-buttons {
   border: none;
   border-radius: 16px;

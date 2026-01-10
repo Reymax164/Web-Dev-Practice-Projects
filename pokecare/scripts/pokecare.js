@@ -18,7 +18,13 @@ const confirmNameBtn = document.getElementById('confirm-name-btn');
 const game = document.getElementById('game-container');
 const gamePokemon = document.getElementById('game-pokemon');
 const pokemonName = document.getElementById('pokemon-name');
+
 const onScreenPoints = document.getElementById('points');
+const outcomeLog = document.getElementById('outcome-log');
+const moodLog = document.getElementById('mood-log');
+const hungerLog = document.getElementById('hunger-log');
+const energyLog = document.getElementById('energy-log');
+const statChanges = Pokemon.getStatChanges();
 
 // game buttons
 const gameButtons = document.querySelectorAll('.game-buttons')
@@ -62,6 +68,12 @@ function reset() {
   cooldownTimer = null;
   pointsCounter = null;
   degradeIntervalTimer = null;
+  
+  // clear game logs
+  outcomeLog.textContent = "";
+  moodLog.textContent = "";
+  hungerLog.textContent = "";
+  energyLog.textContent = "";
 }
 
 // close events
@@ -187,13 +199,25 @@ function buttonCooldown() {
   }, 3000);
 }
 
-// buttons handler function | play(), feed(), sleep()
+function updateGameLogs() {
+  // get the values
+  const currentStats = Pokemon.getStatChanges(); 
+
+  // assign to textContent
+  outcomeLog.textContent = currentStats[0];
+  moodLog.textContent = currentStats[1];
+  hungerLog.textContent = currentStats[2];
+  energyLog.textContent = currentStats[3];
+}
+
+// play(), feed(), sleep()
 function gameButtonsFunction() {
   playGameButton.addEventListener('click', () => {
     buttonCooldown();
     pokemon.play();
     points += 10;
 
+    updateGameLogs();
     updateOnScreenStats();
     isFainted();
   });
@@ -202,6 +226,8 @@ function gameButtonsFunction() {
     buttonCooldown();
     pokemon.feed();
     points += 10;
+    
+    updateGameLogs();
     updateOnScreenStats();
     isFainted();
   });
@@ -210,6 +236,8 @@ function gameButtonsFunction() {
     buttonCooldown();
     pokemon.sleep();
     points += 10;
+    
+    updateGameLogs();
     updateOnScreenStats();
     isFainted();
   });
@@ -218,7 +246,7 @@ function gameButtonsFunction() {
 async function nameInputFunction() {
   const pokemonList = await fetchPokemonList();
 
-  // choice
+  // choices
   choices[0].addEventListener('click', () => {
     choice = pokemonList[0].species;
     closeChoices_OpenNameInput();

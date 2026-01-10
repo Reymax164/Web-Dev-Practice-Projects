@@ -2,7 +2,8 @@ function randomizer(minimum, maximum) {
   return Math.floor(Math.random() * ((maximum - minimum) + 1)) + minimum;
 }
 
-let previousMood; // tracks the stat value before it changes
+// tracks the stat value before it changes
+let previousMood;
 let previousHunger;
 let previousEnergy;
 
@@ -10,6 +11,7 @@ let energyChange;
 let moodChange;
 let hungerChange;
 
+let details;
 
 export default class Pokemon {
   constructor(name, species) {
@@ -100,7 +102,7 @@ export default class Pokemon {
   limitCheck() {
     // over ate
     if(this.hunger >= 110) {
-      console.log(`${this.name} over ate.`);
+      details = `${this.name} over ate.`;
       this.decreaseMood(randomizer(50, 75));
     }
 
@@ -112,19 +114,19 @@ export default class Pokemon {
     if(this.energy < 0 && this.energy > -149) this.energy = 0;
 
     if(this.hunger === 0) {
-      console.log(`${this.name} is hungry.`);
-      this.decreaseMood(randomizer(30, 50));
+      details = `${this.name} is hungry.`;
+      this.decreaseMood(randomizer(25, 35));
     }
     if(this.mood < 0) this.mood = 0;
 
     if(this.mood === 0) {
-      console.log(`${this.name} is bored.`);
+      details = `${this.name} is bored.`;
       this.decreaseEnergy(randomizer(10, 30));
     }
     if(this.energy < 0) this.energy = 0;
 
     if(this.energy < -130) {
-      console.log(`${this.name} crashed out of tiredness.`);
+      details = `${this.name} crashed out of tiredness.`;
       this.sleep();
     }
 
@@ -145,11 +147,21 @@ export default class Pokemon {
     console.log(`Energy: ${this.energy}`);
   }
 
-  // activity functions
+  static getStatChanges() {
+    const statChanges = new Array();
+    statChanges.push(details);
+    statChanges.push(`Mood ${moodChange >= 0? "+" : ""}${moodChange}`);
+    statChanges.push(`Hunger ${hungerChange >= 0? "+" : ""}${hungerChange}`);
+    statChanges.push(`Energy ${energyChange >= 0? "+" : ""}${energyChange}`);
+
+    return statChanges;
+  }
+
+  // activities functions
   // ===== feed =====
   feed() {
     if(this.hunger >= 100) {
-      console.log(`${this.name} is full`);
+      details = `${this.name} is full`;
       return; 
     }
 
@@ -157,7 +169,7 @@ export default class Pokemon {
       let eatOutcome = randomizer(1, 5);
 
       if(eatOutcome > 1) {
-        console.log(`${this.name} is not in mood to eat.`);
+        details = `${this.name} is not in mood to eat.`;
         return;
       }
     }
@@ -172,31 +184,31 @@ export default class Pokemon {
     if (outcome === 1) {
       this.increaseHunger(randomizer(60, 80));
       this.increaseMood(randomizer(31, 50)); 
-      console.log(`${this.name} ate a lot.`);
+      details = `${this.name} ate a lot.`;
     }
     // okay
     else if (outcome === 2) {
       this.increaseHunger(randomizer(30, 59));
       this.increaseMood(randomizer(10, 30)); 
-      console.log(`${this.name} ate.`);
+      details = `${this.name} ate.`;
     }
     // bad
     else {
       this.increaseHunger(randomizer(10, 29));
       this.decreaseMood(randomizer(30, 50));
-      console.log(`${this.name} didn't liked the food.`);
+      details = `${this.name} didn't liked the food.`;
     }
 
     this.increaseEnergy(randomizer(10, 30));
 
     this.limitCheck();
-    this.logStatChanges();
+    // this.logStatChanges();
   }
 
   // ===== play =====
   play() {
     if(this.energy <= 0) {
-      console.log(`${this.name} has no energy to play.`);
+      details = `${this.name} has no energy to play.`;
       this.decreaseMood(randomizer(15, 30));
       return;
     }
@@ -208,32 +220,32 @@ export default class Pokemon {
     const outcome = randomizer(1, 3);
 
     if (outcome === 1) {
-      console.log(`${this.name} enjoyed playing.`);
+      details = `${this.name} enjoyed playing.`;
       this.increaseMood(randomizer(60, 80));
       this.decreaseEnergy(randomizer(40, 90));
     }
     else if (outcome === 2) {
-      console.log(`${this.name} played.`);
+      details = `${this.name} played.`;
       this.increaseMood(randomizer(30, 59)); 
       this.decreaseEnergy(randomizer(50, 75));
     }
     else {
-      console.log(`${this.name} didn't enjoy playing.`);
+      details = `${this.name} didn't enjoy playing.`;
       this.increaseMood(randomizer(10, 29));
       this.decreaseEnergy(50, 80);
     }
 
-    this.decreaseHunger(randomizer(30, 50));
+    this.decreaseHunger(randomizer(15, 30));
 
     this.limitCheck();
-    this.logStatChanges();
+    // this.logStatChanges();
 
   }
 
   // ===== sleep =====
   sleep() {
     if(this.energy === 100) {
-      console.log(`${this.name} is full of energy.`);
+      details = `${this.name} is full of energy.`;
       return;
     }
 
@@ -244,37 +256,36 @@ export default class Pokemon {
     const outcome = randomizer(1, 3);
 
     if (outcome === 1) {
-      console.log(`${this.name} had a long sleep.`);
+      details = `${this.name} had a long sleep.`;
       this.increaseEnergy(randomizer(60, 80)); 
       this.increaseMood(randomizer(10, 30));
-      this.decreaseHunger(randomizer(45, 75));
+      this.decreaseHunger(randomizer(35, 55));
     }
     else if (outcome === 2) {
-      console.log(`${this.name} slept.`);
+      details = `${this.name} slept.`;
       this.increaseEnergy(randomizer(30, 59));
       this.increaseMood(randomizer(5, 15));
-      this.decreaseHunger(randomizer(25, 50));
+      this.decreaseHunger(randomizer(20, 35));
     }
     else {
       this.increaseEnergy(randomizer(10, 29));
       this.decreaseMood(randomizer(20, 40));
-      this.decreaseHunger(randomizer(30, 60));
-      console.log(`${this.name} didn't have a good sleep.`);
+      this.decreaseHunger(randomizer(20, 30));
+      details = `${this.name} didn't have a good sleep.`;
     }
 
 
     // over slept
     if(this.energy >= 110) {
-      console.log(`${this.name} over slept.`);
-      this.decreaseMood(randomizer(20, 40));
+      details = `${this.name} over slept.`;
+      this.decreaseMood(randomizer(10, 20));
     }
 
     this.limitCheck();
-    this.logStatChanges();
+    // this.logStatChanges();
   }
 
   get isFainted() {
-    // ternary
     return (this.hunger === 0 &&
             this.mood === 0 &&
             this.energy === 0) ?

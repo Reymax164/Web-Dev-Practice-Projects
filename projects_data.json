@@ -2,6 +2,6 @@
   {
     "title": "PokéCare",
     "description": "Virtual pet web game to practice OOP, ES6, Promise, async/await, and fetch in JavaScipt",
-    "href": "/pokecare/pokecare.html"
+    "href": "pokecare/pokecare.html"
   }
 ]

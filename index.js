@@ -2,7 +2,7 @@
 async function loadData() {
   
   try {
-    const response = await fetch('./projects_data.json');
+    const response = await fetch('projects_data.json');
     if (!response.ok) throw new Error("Could not fetch data");
 
     const data = await response.json();
@@ -18,7 +18,7 @@ async function loadData() {
 
 async function loadProjects() {
   try {
-    const response = await fetch('./projects_data.json');
+    const response = await fetch('projects_data.json');
     if (!response.ok) throw new Error("Could not fetch projects");
 
     const data = await response.json();

@@ -1,30 +1,42 @@
 export default class PokeAPI {
-  constructor(y) {
+  constructor() {
     // Singleton Pattern
     if (PokeAPI.instance) {
       return PokeAPI.instance;
     }
     PokeAPI.instance = this;
     
-    // base URL
     this.baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
+    
   }
 
-  // getSprite
-  async getSprite(species) {
+  async #fetchData(species) {
     try {
       const response = await fetch(`${this.baseUrl}${species}`);
 
       if (!response.ok) {
-        throw new Error("Could not fetch");
+        throw new Error(`Could not fetch data for ${species}`);
       }
 
       const data = await response.json();
-
-      return data.sprites.front_default;
+      // console.log(data);
+      return data;
 
     } catch (error) {
       console.error(error);
+      return null;
     }
+  }
+
+  // getSprite
+  async getSprite(species) {
+    const data = await this.#fetchData(species);
+    return data?.sprites?.front_default;
+  }
+
+  // getCry
+  async getCry(species) {
+    const data = await this.#fetchData(species);
+    return data?.cries?.latest;
   }
 }

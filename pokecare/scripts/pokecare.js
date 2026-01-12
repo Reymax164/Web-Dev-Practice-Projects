@@ -4,6 +4,8 @@ import HighScoreHandler from './high-score-handler.js';
 
 // html elements
 const playBtn = document.getElementById('play-btn');
+const openTutoriialBtn = document.getElementById('tutorial-btn');
+const tutorialContainer = document.getElementById('tutorial-container');
 const background = document.getElementById('transparent-background');
 const backgroundMusic = document.getElementById('bg-music');
 
@@ -22,6 +24,8 @@ const gamePokemon = document.getElementById('game-pokemon');
 const pokemonName = document.getElementById('pokemon-name');
 
 const onScreenScore = document.getElementById('on-screen-score');
+
+const pokemonCry = document.getElementById('pokemon-cry');
 
 const onScreenLog = document.getElementById('on-screen-log');
 const outcomeLog = document.getElementById('outcome-log');
@@ -58,6 +62,7 @@ const closeChoices = closeBtns[0];
 const closeNameInput = closeBtns[1];
 const closeGame = closeBtns[2];
 const closeLoseScreen = closeBtns[3];
+const closeTutorial = closeBtns[4];
 
 // reset
 function reset() {
@@ -84,6 +89,10 @@ function reset() {
   moodLog.textContent = "";
   hungerLog.textContent = "";
   energyLog.textContent = "";
+
+  // game pokemon
+  gamePokemon.src = "";
+  pokemonCry.src = "";
 
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
@@ -149,6 +158,11 @@ async function setGameSprite(choice) {
   gamePokemon.src = await api.getSprite(choice);
 }
 
+// pokemon cry in game
+async function setCry(species) {
+  pokemonCry.src = await api.getCry(species);
+}
+
 // ===== main memu =====
 // Play
 playBtn.addEventListener('click', () => {
@@ -192,6 +206,7 @@ function isFainted() {
 function startStatDegrade() {
   if(!degradeIntervalTimer) {
     degradeIntervalTimer = setInterval(() => {
+      isMaxStats();
       pokemon.setMood(randomizer(-3, -1));
       pokemon.setHunger(randomizer(-3, -1));
       pokemon.setEnergy(randomizer(-3, -1));
@@ -230,7 +245,15 @@ function buttonCooldown() {
   }, 3000);
 }
 
+// pokemon jump
+function spriteJump() {
+  gamePokemon.classList.add('jump');
+  setTimeout(() => {
+    gamePokemon.classList.remove('jump');
+  }, 500);
+}
 
+// ========== game log ==========
 function updateGameLogs() {
   const currentStats = Pokemon.getStatChanges();
   
@@ -247,32 +270,51 @@ function updateGameLogs() {
   onScreenLog.classList.add('fade-message');
 }
 
-// play(), feed(), sleep()
+// stats at 100
+function isMaxStats() {
+  let mood = pokemon.getMood;
+  let hunger = pokemon.getHunger;
+  let energy = pokemon.getEnergy;
+  
+  if(mood >= 100 && hunger >= 100 && energy >= 100) score += 100;
+}
+
+// ========== activities ==========
 function gameButtonsFunction() {
+
+  // ========== play ==========
   playGameButton.addEventListener('click', () => {
+    pokemonCry.play();
     buttonCooldown();
-    pokemon.play();
+    spriteJump();
     score += 10;
+    pokemon.play();
 
     updateGameLogs();
     updateOnScreenStats();
     isFainted();
   });
 
+  // ========== feed ==========
   feedGameButton.addEventListener('click', () => {
+    pokemonCry.play();
     buttonCooldown();
-    pokemon.feed();
+    spriteJump();
     score += 10;
+    pokemon.feed();
     
     updateGameLogs();
     updateOnScreenStats();
     isFainted();
   });
 
+  // ========== sleep ==========
   sleepGameButton.addEventListener('click', () => {
+    pokemonCry.play();
     buttonCooldown();
-    pokemon.sleep();
+    spriteJump();
     score += 10;
+    pokemon.sleep();
     
     updateGameLogs();
     updateOnScreenStats();
@@ -308,14 +350,17 @@ async function nameInputFunction() {
       if(choice === pokemonList[0].species) {
         if(name === "") name = pokemonList[0].species;
         pokemon = new Pokemon(name, pokemonList[0].species);
+        setCry(pokemonList[0].species);
       }
       else if (choice === pokemonList[1].species) {
         if(name === "")  name = pokemonList[1].species;
         pokemon = new Pokemon(name, pokemonList[1].species)
+        setCry(pokemonList[1].species);
       }
       else if (choice === pokemonList[2].species) {
         if(name === "")  name = pokemonList[2].species;
         pokemon = new Pokemon(name, pokemonList[2].species)
+        setCry(pokemonList[2].species);
       }
       pokemonName.textContent = pokemon.getName;
       updateOnScreenStats();
@@ -337,3 +382,14 @@ async function nameInputFunction() {
 
 setSprites();
 nameInputFunction();
+
+// ========== Tutorial ==========
+openTutoriialBtn.addEventListener('click', () => {
+  background.style.display = "block";
+  tutorialContainer.style.display = "block";
+});
+
+closeTutorial.addEventListener('click', () => {
+  tutorialContainer.style.display = "none";
+  background.style.display = "none";
+});

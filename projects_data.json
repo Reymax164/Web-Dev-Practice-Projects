@@ -1,7 +1,8 @@
 [
   {
     "title": "PokéCare",
-    "description": "Virtual pet web game to practice OOP, ES6, Promise, async/await, and fetch in JavaScipt",
-    "href": "pokecare/pokecare.html"
+    "description": "Virtual pet web game to practice OOP, ES6, async/await, and fetch in JavaScipt",
+    "href": "pokecare/pokecare.html",
+    "icon": "pokecare/assets/grass-tile.png"
   }
 ]

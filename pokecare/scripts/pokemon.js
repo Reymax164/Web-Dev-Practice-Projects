@@ -116,7 +116,7 @@ export default class Pokemon {
 
     if(this.mood === 0) {
       details = `${this.name} is bored.`;
-      this.decreaseEnergy(randomizer(10, 15));
+      this.decreaseEnergy(randomizer(10, 20));
     }
     if(this.energy < 0) this.energy = 0;
 

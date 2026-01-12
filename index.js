@@ -99,6 +99,7 @@ async function projectsLoader() {
     projectCards += `
       <div class="projects">
         <a href="${project.href}">
+          <img src="${project.icon}"></img>
           <p>${project.title}</p>
         </a>
       </div>

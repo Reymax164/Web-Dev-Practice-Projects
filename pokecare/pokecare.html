@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../general.css">
   <link rel="stylesheet" href="../pokecare/pokecare.css">
+  <link rel="icon" href="./assets/grass-tile.png">
   <title>PokéCare</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
     <div id="menu">
       <p>Main Menu</p>
       <button id="play-btn" class="menu-buttons">Play</button>
-      <button class="menu-buttons">Tutorial</button>
+      <button id="tutorial-btn" class="menu-buttons">Tutorial</button>
 
       <div id="transparent-background">
 
@@ -45,9 +46,9 @@
             <img id="grass-tile" src="assets/grass-tile.png" alt="grass tile">
 
             <div id="stats-container">
-              <p id="mood-p" class="pokemon-stats-p">Mood: </p>
-              <p id="hunger-p"class="pokemon-stats-p">Hunger: </p>
-              <p id="energy-p"class="pokemon-stats-p">Energy: </p>
+              <p id="mood-p" class="pokemon-stats-p"></p>
+              <p id="hunger-p"class="pokemon-stats-p"></p>
+              <p id="energy-p"class="pokemon-stats-p"></p>
             </div>
 
             <p id="on-screen-score">Score: 0</p>
@@ -59,9 +60,12 @@
               <p id="energy-log"></p>
             </div>
 
+            <!-- audio -->
+            <audio id="pokemon-cry"></audio>
             <audio id="bg-music" loop preload="auto">
               <source src="./assets/littleroot-town.mp3" type="audio/mpeg">
             </audio>
+
           </div>
 
           <div id="game-btns-container">
@@ -78,15 +82,45 @@
           <p id="lose-screen-high-score"></p>
         </div>
 
+        <div id="tutorial-container">
+          <span class="close-btn">&times</span>
+          <h2>Tutorial</h2>
+          <hr>
+          <p>
+            Take care of your pokemon for as long as possible. Their stats depletes over time, play with them to increase their mood, feed them when they're hungry,
+            and make them sleep when they're out of energy.
+          </p>
+          <ul>
+            <li><strong>Play: </strong>increases mood but lowers hunger and energy</li>
+            <li><strong>Feed: </strong>increases hunger and a bit of energy</li>
+            <li><strong>Sleep: </strong>increases energy and a bit of mood but lowers hunger</li>
+          </ul>
+          <br>
+          <p>There's a 3 second cooldown each activities you do.</p>
+          <p>Each activities have three (3) outcomes: <em>Good</em>, <em>Normal</em>, and <em>Bad</em> which has equal chance of of happening. A bad outcome lowers the mood.</p>
+          <br>
+          <p>When a stat gets low, they can have some effects</p>
+          <ul>
+            <li>If <strong>energy</strong> is <strong>0</strong>, you <em>can't play</em>.</li>
+            <li>If <strong>mood</strong> is <strong>0</strong>, the pokemon is bored and <em>energy depletes faster</em>.</li>
+            <li>If <strong>hunger</strong> is <strong>0</strong>, the pokemon is hungry and <em>mood depletes faster</em>.</li>
+            <li>If <strong>mood</strong> is <em>lower than 30</em>, the pokemon will <em>not be in mood to eat 80% of the time</em> you feed it.</li>
+          </ul>
+          <br>
+          <p>Don't do activities too much as the pokemon can <em>over ate</em> or <em>over sleep</em> which <em>lowers the mood</em>. They can't eat or sleep at 100 hunger or energy</p>
+          <br>
+          <p>Score is counted each second you take care of your pokemon, there's an additional 10 score for each activities you do, and 100 score if all the stats got 100 at the same time.</p>
+          <br>
+          <p>Goodluck Trainer.</p>
+        </div>
       </div>
     </div>
   </main>
 
   <footer>
-        
   </footer>
 
-  <script type="module" src="../pokecare/scripts/pokecare.js">
-  </script>
+  <script type="module" src="../pokecare/scripts/pokecare.js"></script>
+  <script ></script>
 </body>
 </html>
